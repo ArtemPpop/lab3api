@@ -2,9 +2,9 @@
 {
     public class Purchase
     {
-        public int Id { get; set; } // № п/п
-        public string Article { get; set; } = string.Empty; // Артикул (ключ)
-        public string Name { get; set; } = string.Empty; // Наименование
-        public decimal UnitPrice { get; set; } // Стоимость единицы товара
+        public int Id { get; set; }
+        public string? Article { get; set; }  
+        public string? Name { get; set; }
+        public decimal UnitPrice { get; set; } 
     }
 }

@@ -22,7 +22,6 @@ namespace lab3api.Controllers
                 .Where(s => s.Article == article)
                 .Sum(s => s.Quantity);
 
-            // допустим, изначально было 10 единиц каждого товара
             var available = 10 - totalSold;
 
             return Ok(new
