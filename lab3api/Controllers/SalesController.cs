@@ -1,6 +1,7 @@
 ﻿using lab3api.Model;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace lab3api.Controllers
 {
@@ -29,6 +30,29 @@ namespace lab3api.Controllers
                 Sales = sales,
                 TotalAmount = total
             });
+        }
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<Sale>>> GetAll()
+        {
+            return await _context.Sales.ToListAsync();
+        }
+        [HttpPost]
+        public async Task<ActionResult<Sale>> Create(Sale sale)
+        {
+            _context.Sales.Add(sale);
+            await _context.SaveChangesAsync();
+            return CreatedAtAction(nameof(GetAll), new { id = sale.Id }, sale);
+        }
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var sale = await _context.Sales.FindAsync(id);
+            if (sale == null)
+                return NotFound();
+
+            _context.Sales.Remove(sale);
+            await _context.SaveChangesAsync();
+            return NoContent();
         }
     }
 }

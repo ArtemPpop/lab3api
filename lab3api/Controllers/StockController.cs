@@ -1,6 +1,7 @@
 ﻿using lab3api.Model;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace lab3api.Controllers
 {
@@ -32,6 +33,30 @@ namespace lab3api.Controllers
                 Sold = totalSold,
                 Available = available
             });
+        }
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<Purchase>>> GetAll()
+        {
+            return await _context.Purchases.ToListAsync();
+        }
+        [HttpPost]
+        public async Task<ActionResult<Purchase>> Create(Purchase purchase)
+        {
+            _context.Purchases.Add(purchase);
+            await _context.SaveChangesAsync();
+            return CreatedAtAction(nameof(GetAll), new { id = purchase.Id }, purchase);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var item = await _context.Purchases.FindAsync(id);
+            if (item == null)
+                return NotFound();
+
+            _context.Purchases.Remove(item);
+            await _context.SaveChangesAsync();
+            return NoContent();
         }
     }
 }
